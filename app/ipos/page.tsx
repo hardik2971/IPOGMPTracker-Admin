@@ -141,22 +141,22 @@ export default function IPOsPage() {
         prev.map((i) =>
           i.id === editingIPO.id
             ? {
-                ...i,
-                name: formData.name,
-                companyName: formData.companyName,
-                openDate: formData.openDate,
-                closeDate: formData.closeDate,
-                priceBand: {
-                  min: Number(formData.minPrice) || 0,
-                  max: Number(formData.maxPrice) || 0,
-                },
-                lotSize: Number(formData.lotSize) || 0,
-                ipoType: formData.ipoType || undefined,
-                issueSize: formData.issueSize || undefined,
-                premium: formData.premium || undefined,
-                iconUrl: formData.iconUrl || undefined,
-                status: formData.status,
-              }
+              ...i,
+              name: formData.name,
+              companyName: formData.companyName,
+              openDate: formData.openDate,
+              closeDate: formData.closeDate,
+              priceBand: {
+                min: Number(formData.minPrice) || 0,
+                max: Number(formData.maxPrice) || 0,
+              },
+              lotSize: Number(formData.lotSize) || 0,
+              ipoType: formData.ipoType || undefined,
+              issueSize: formData.issueSize || undefined,
+              premium: formData.premium || undefined,
+              iconUrl: formData.iconUrl || undefined,
+              status: formData.status,
+            }
             : i,
         ),
       );
@@ -452,7 +452,8 @@ export default function IPOsPage() {
           </div>
         )}
 
-        <Modal
+      </div>
+      <Modal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           title={editingIPO ? "Edit IPO" : "Add IPO"}
@@ -469,29 +470,168 @@ export default function IPOsPage() {
           }
         >
           <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">IPO Name</label>
-              <Input
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">IPO Name</label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Company Name
+                </label>
+                <Input
+                  value={formData.companyName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, companyName: e.target.value })
+                  }
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Company Name
-              </label>
-              <Input
-                value={formData.companyName}
-                onChange={(e) =>
-                  setFormData({ ...formData, companyName: e.target.value })
-                }
-                required
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Open Date
+                </label>
+                <Input
+                  type="date"
+                  value={formData.openDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, openDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Close Date
+                </label>
+                <Input
+                  type="date"
+                  value={formData.closeDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, closeDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Min Price
+                </label>
+                <Input
+                  type="number"
+                  value={formData.minPrice}
+                  onChange={(e) =>
+                    setFormData({ ...formData, minPrice: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Max Price
+                </label>
+                <Input
+                  type="number"
+                  value={formData.maxPrice}
+                  onChange={(e) =>
+                    setFormData({ ...formData, maxPrice: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Lot Size</label>
+                <Input
+                  type="number"
+                  value={formData.lotSize}
+                  onChange={(e) =>
+                    setFormData({ ...formData, lotSize: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">IPO Type</label>
+                <Select
+                  value={formData.ipoType || "__none__"}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      ipoType: value === "__none__" ? "" : value,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="__none__">Select type</SelectItem>
+                    <SelectItem value="SME">SME</SelectItem>
+                    <SelectItem value="Mainboard">Mainboard</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Status</label>
+                <Select
+                  value={formData.status}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      status: value as "upcoming" | "live" | "closed",
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="upcoming">Upcoming</SelectItem>
+                    <SelectItem value="live">Live</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Issue Size (Cr)
+                </label>
+                <Input
+                  type="text"
+                  placeholder="e.g. 86.08"
+                  value={formData.issueSize}
+                  onChange={(e) =>
+                    setFormData({ ...formData, issueSize: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Exp. Premium
+                </label>
+                <Input
+                  type="text"
+                  placeholder="e.g. 12 (6.8%)"
+                  value={formData.premium}
+                  onChange={(e) =>
+                    setFormData({ ...formData, premium: e.target.value })
+                  }
+                />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">
@@ -552,148 +692,10 @@ export default function IPOsPage() {
                 )}
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Open Date
-                </label>
-                <Input
-                  type="date"
-                  value={formData.openDate}
-                  onChange={(e) =>
-                    setFormData({ ...formData, openDate: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Close Date
-                </label>
-                <Input
-                  type="date"
-                  value={formData.closeDate}
-                  onChange={(e) =>
-                    setFormData({ ...formData, closeDate: e.target.value })
-                  }
-                  required
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Min Price
-                </label>
-                <Input
-                  type="number"
-                  value={formData.minPrice}
-                  onChange={(e) =>
-                    setFormData({ ...formData, minPrice: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Max Price
-                </label>
-                <Input
-                  type="number"
-                  value={formData.maxPrice}
-                  onChange={(e) =>
-                    setFormData({ ...formData, maxPrice: e.target.value })
-                  }
-                  required
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Lot Size</label>
-              <Input
-                type="number"
-                value={formData.lotSize}
-                onChange={(e) =>
-                  setFormData({ ...formData, lotSize: e.target.value })
-                }
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">IPO Type</label>
-              <Select
-                value={formData.ipoType || "__none__"}
-                onValueChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    ipoType: value === "__none__" ? "" : value,
-                  })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="__none__">Select type</SelectItem>
-                  <SelectItem value="SME">SME</SelectItem>
-                  <SelectItem value="Mainboard">Mainboard</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Status</label>
-              <Select
-                value={formData.status}
-                onValueChange={(value) =>
-                  setFormData({
-                    ...formData,
-                    status: value as "upcoming" | "live" | "closed",
-                  })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="upcoming">Upcoming</SelectItem>
-                  <SelectItem value="live">Live</SelectItem>
-                  <SelectItem value="closed">Closed</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Issue Size (Cr)
-              </label>
-              <Input
-                type="text"
-                placeholder="e.g. 86.08"
-                value={formData.issueSize}
-                onChange={(e) =>
-                  setFormData({ ...formData, issueSize: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Exp. Premium
-              </label>
-              <Input
-                type="text"
-                placeholder="e.g. 12 (6.8%)"
-                value={formData.premium}
-                onChange={(e) =>
-                  setFormData({ ...formData, premium: e.target.value })
-                }
-              />
-            </div>
-           
           </form>
-        </Modal>
+      </Modal>
 
-        <ViewModal
+      <ViewModal
           isOpen={isViewModalOpen}
           onClose={() => {
             setIsViewModalOpen(false);
@@ -759,13 +761,12 @@ export default function IPOsPage() {
                   label="Status"
                   value={
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        viewingIPO.status === "upcoming"
-                          ? "bg-blue-100 text-blue-800"
-                          : viewingIPO.status === "live"
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${viewingIPO.status === "upcoming"
+                        ? "bg-blue-100 text-blue-800"
+                        : viewingIPO.status === "live"
                           ? "bg-green-100 text-green-800"
                           : "bg-gray-100 text-gray-800"
-                      }`}
+                        }`}
                     >
                       {viewingIPO.status}
                     </span>
@@ -778,8 +779,7 @@ export default function IPOsPage() {
               </div>
             </div>
           )}
-        </ViewModal>
-      </div>
+      </ViewModal>
     </MainLayout>
   );
 }

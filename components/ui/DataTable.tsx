@@ -88,15 +88,15 @@ export function DataTable<T>({
       )}
 
       <div className="rounded-md border overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full ">
             <thead className="bg-muted/50">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="px-4 py-3 text-left text-sm font-semibold text-foreground"
+                      className="px-4 py-2 text-left text-sm font-semibold text-foreground whitespace-nowrap"
                     >
                       {header.isPlaceholder ? null : (
                         <div
@@ -143,7 +143,7 @@ export function DataTable<T>({
                     onClick={() => onRowClick?.(row.original)}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="px-4 py-3 text-sm">
+                      <td key={cell.id} className="px-4 py-3 text-sm whitespace-nowrap">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
