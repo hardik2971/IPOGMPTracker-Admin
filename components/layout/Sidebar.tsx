@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       >
         <div className="p-6 border-b border-border flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-primary">IPOGMPTRACKER</h1>
+            <h1 className="text-2xl font-bold text-primary">Logo</h1>
             <p className="text-xs text-muted-foreground mt-1">
               Management Panel
             </p>
@@ -85,7 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         </nav>
         <div className="p-4 border-t border-border">
           <div className="text-xs text-muted-foreground">
-            <p>IPOG Admin v1.0</p>
+            <p>Admin v1.0</p>
           </div>
         </div>
       </div>

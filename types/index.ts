@@ -23,6 +23,51 @@ export interface IPO {
   lotSize: number;
   status: "upcoming" | "live" | "closed";
   createdAt: string;
+  /** From API: display in table card */
+  iconUrl?: string;
+  ipoType?: string;
+  premium?: string;
+  issueSize?: string;
+}
+
+/** API response shape for IPO (snake_case from backend) */
+export interface IPOApiResponse {
+  id: number;
+  name: string;
+  open: string;
+  close: string;
+  start_time?: string;
+  end_time?: string;
+  script_code?: string;
+  icon_url?: string;
+  min_price: string;
+  max_price: string;
+  lot_size: number;
+  premium?: string;
+  allotment_date?: string;
+  listing_date?: string;
+  allotment_link?: string | null;
+  is_buyer?: number;
+  is_seller?: number;
+  is_pre_apply?: number;
+  issue_size?: string;
+  current_status: string;
+  ipo_type?: string;
+  listing_price?: string | null;
+  slug?: string;
+  created_at: string;
+  updated_at?: string;
+  lead_managers?: Array<{
+    id: number;
+    name: string;
+    about_section?: string;
+    logo?: string;
+    address?: string;
+    email?: string;
+    phone?: string;
+    website?: string;
+    pivot?: { ipo_id: number; lead_manager_id: number };
+  }>;
 }
 
 export interface Category {

@@ -21,6 +21,8 @@ interface DataTableProps<T> {
   searchKey?: string;
   searchPlaceholder?: string;
   onRowClick?: (row: T) => void;
+  /** Hide built-in pagination (e.g. when using server-side pagination) */
+  hidePagination?: boolean;
 }
 
 export function DataTable<T>({
@@ -29,15 +31,25 @@ export function DataTable<T>({
   searchKey,
   searchPlaceholder = "Search...",
   onRowClick,
+  hidePagination = false,
 }: DataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const filteredData = useMemo(() => {
-    if (!searchKey || !globalFilter) return data;
+    if (!globalFilter) return data;
+    const query = globalFilter.toLowerCase();
+
     return data.filter((item: any) => {
-      const value = item[searchKey];
-      return value?.toString().toLowerCase().includes(globalFilter.toLowerCase());
+      // If a specific search key is provided, prefer that,
+      // otherwise fall back to checking all string fields on the row.
+      const keys = searchKey ? [searchKey] : Object.keys(item ?? {});
+
+      return keys.some((key) => {
+        const value = item?.[key];
+        if (value == null) return false;
+        return value.toString().toLowerCase().includes(query);
+      });
     });
   }, [data, globalFilter, searchKey]);
 
@@ -146,41 +158,43 @@ export function DataTable<T>({
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
-          {Math.min(
-            (table.getState().pagination.pageIndex + 1) *
-              table.getState().pagination.pageSize,
-            filteredData.length
-          )}{" "}
-          of {filteredData.length} entries
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Previous
-          </Button>
+      {!hidePagination && (
+        <div className="flex items-center justify-between">
           <div className="text-sm text-muted-foreground">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+            Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
+            {Math.min(
+              (table.getState().pagination.pageIndex + 1) *
+                table.getState().pagination.pageSize,
+              filteredData.length
+            )}{" "}
+            of {filteredData.length} entries
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </Button>
+            <div className="text-sm text-muted-foreground">
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

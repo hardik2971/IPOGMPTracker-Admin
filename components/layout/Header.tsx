@@ -38,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           </div>
           <div className="hidden md:block">
             <p className="text-sm font-medium">Admin User</p>
-            <p className="text-xs text-muted-foreground">admin@ipog.com</p>
+            <p className="text-xs text-muted-foreground">admin@abc.com</p>
           </div>
         </div>
       </div>
